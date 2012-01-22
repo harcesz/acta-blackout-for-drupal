@@ -1,0 +1,4 @@
+name = ACTA Blackout
+description = Black out your site on 22nd Jan 2012 to protest against ACTA.
+version = 6.x-1.0
+core = 6.x

@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file acta.module
+ * Black out your site on 22nd Jan 2012 to protest against ACTA.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function acta_init() {
+  // Onerous hackin' time!
+  $on_admin_page = strpos($_SERVER['REQUEST_URI'], 'admin') === 1;
+  $on_user_page = strpos($_SERVER['REQUEST_URI'], 'user') === 1;
+  $on_art_page = strpos($_SERVER['REQUEST_URI'], 'wiadomosc/nie-dla-acta-akcja-protestacyjna') === 1;
+  // this is for panoptykon.org only!! 
+
+  if (isset($_GET['acta_test']) || !($on_admin_page || $on_user_page || $on_art_page)) {
+    if (isset($_GET['acta_test']) || date('Y-m-d') == '2012-01-22') {
+      // Preserve SE ranking. @see http://drupal.org/node/1405892#comment-5481540
+      header('HTTP/1.1 503 Service Temporarily Unavailable');
+      header('Retry-After: Thu, 22 Jan 2012 00:00:00 GMT');
+      print file_get_contents(dirname(__FILE__) .'/template/acta.html');
+      exit();
+    }
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function acta_help($path, $arg) {
+  switch ($path)  {
+    case "admin/help#acta":
+      return t("Block out your site on 22nd January 2012.");
+      break;
+  }
+}
